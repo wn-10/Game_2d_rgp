@@ -1,9 +1,27 @@
-[gd_scene load_steps=12 format=3 uid="uid://3vfr8kmi3eow"]
+[gd_scene load_steps=15 format=3 uid="uid://3vfr8kmi3eow"]
 
 [ext_resource type="Texture2D" uid="uid://cahlem80nbyaw" path="res://assets/player/sprites/ExamplePlayerSprite.png" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://dvxewpx2q3le2" path="res://scripts/player/player.gd" id="1_dovo2"]
+[ext_resource type="Script" uid="uid://ythcs00ejnvt" path="res://scripts/player/player_state_machine.gd" id="3_gmlin"]
+[ext_resource type="Script" uid="uid://8bg3iji0audc" path="res://scripts/player/state_idle.gd" id="4_lvxji"]
+[ext_resource type="Script" uid="uid://6g82iwkw8en3" path="res://scripts/player/state_walk.gd" id="5_p47bc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wt17y"]
+
+[sub_resource type="Animation" id="Animation_gmlin"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
 
 [sub_resource type="Animation" id="Animation_dovo2"]
 resource_name = "idle_down"
@@ -21,39 +39,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 4, 5, 6]
-}
-
-[sub_resource type="Animation" id="Animation_gmlin"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
-[sub_resource type="Animation" id="Animation_lvxji"]
-resource_name = "idle_up"
-length = 0.4
-loop_mode = 2
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.5, 0.6, 0.7, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [7, 8, 9, 3, 4, 5, 6]
 }
 
 [sub_resource type="Animation" id="Animation_p47bc"]
@@ -74,6 +59,24 @@ tracks/0/keys = {
 "values": [14, 15, 16, 3, 4, 5, 6]
 }
 
+[sub_resource type="Animation" id="Animation_lvxji"]
+resource_name = "idle_up"
+length = 0.4
+loop_mode = 2
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.5, 0.6, 0.7, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [7, 8, 9, 3, 4, 5, 6]
+}
+
 [sub_resource type="Animation" id="Animation_75vfm"]
 resource_name = "walk_down"
 length = 0.3
@@ -92,24 +95,6 @@ tracks/0/keys = {
 "values": [3, 4, 5, 6, 6]
 }
 
-[sub_resource type="Animation" id="Animation_0owmy"]
-resource_name = "walk_up"
-length = 0.3
-loop_mode = 2
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [10, 11, 12, 13, 6]
-}
-
 [sub_resource type="Animation" id="Animation_qek5x"]
 resource_name = "walk_side"
 length = 0.3
@@ -126,6 +111,24 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
 "values": [17, 18, 19, 20, 6]
+}
+
+[sub_resource type="Animation" id="Animation_0owmy"]
+resource_name = "walk_up"
+length = 0.3
+loop_mode = 2
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [10, 11, 12, 13, 6]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5gtgg"]
@@ -156,3 +159,12 @@ root_node = NodePath("../PlayerSprite")
 libraries = {
 &"": SubResource("AnimationLibrary_5gtgg")
 }
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("3_gmlin")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("4_lvxji")
+
+[node name="Walk" type="Node" parent="StateMachine"]
+script = ExtResource("5_p47bc")
