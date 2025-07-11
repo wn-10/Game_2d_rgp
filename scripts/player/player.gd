@@ -16,6 +16,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	player_direction = Input.get_vector("left","right","up","down")
+	player_direction = player_direction.normalized()
 
 func _physics_process(_delta: float) -> void:
 	move_and_slide()
