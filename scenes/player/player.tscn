@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://3vfr8kmi3eow"]
+[gd_scene load_steps=31 format=3 uid="uid://3vfr8kmi3eow"]
 
 [ext_resource type="Script" uid="uid://dvxewpx2q3le2" path="res://scripts/player/player.gd" id="1_dovo2"]
 [ext_resource type="Texture2D" uid="uid://d4icvrqdechvp" path="res://assets/player/sprites/PlayerSprite02.png" id="2_p47bc"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://txd0fp1yp7d0" path="res://scripts/player/state_attack.gd" id="6_75vfm"]
 [ext_resource type="AudioStream" uid="uid://cvasjmxhaofs0" path="res://assets/player/audio/SwordSwoosh.wav" id="8_qek5x"]
 [ext_resource type="Texture2D" uid="uid://ce21wx0xcwcic" path="res://assets/player/sprites/Shadow.png" id="9_5gtgg"]
+[ext_resource type="PackedScene" uid="uid://dyn8uqrp36iev" path="res://scenes/general_nodes/hurt_box/hurt_box.tscn" id="10_h17s1"]
+[ext_resource type="Script" uid="uid://ciikj3yifqy8h" path="res://scripts/player/player_interactions_host.gd" id="10_je7p5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wt17y"]
 
@@ -432,6 +434,9 @@ _data = {
 &"walk_up": SubResource("Animation_0owmy")
 }
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_je7p5"]
+radius = 20.0
+
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(-1, -1)
 collision_mask = 16
@@ -491,3 +496,15 @@ decelerate_speed = 10.0
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Audio"]
 max_polyphony = 4
+
+[node name="Interactions" type="Node2D" parent="."]
+script = ExtResource("10_je7p5")
+
+[node name="HurtBox" parent="Interactions" instance=ExtResource("10_h17s1")]
+collision_mask = 256
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactions/HurtBox"]
+position = Vector2(0, 16)
+shape = SubResource("CircleShape2D_je7p5")
+debug_color = Color(1, 0, 0, 0.419608)

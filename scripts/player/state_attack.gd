@@ -9,20 +9,28 @@ var attacking : bool = false
 @onready var animation_player: AnimationPlayer = $"../../AnimationPlayer"
 @onready var animation_player_attack_effect: AnimationPlayer = $"../../PlayerSprite/AttackEffectSprite/AnimationPlayer"
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $"../../Audio/AudioStreamPlayer2D"
+@onready var hurt_box: HurtBox = $"../../Interactions/HurtBox"
 
 func player_enter_state() -> void:
 	player.update_animation("attack")
 	animation_player_attack_effect.play("attack_" + player.animation_direction())
 	animation_player.animation_finished.connect(end_attacking)
+	
 	audio_stream_player_2d.stream = attack_sound
 	audio_stream_player_2d.pitch_scale = randf_range(0.9,1.1)
 	audio_stream_player_2d.play()
+	
 	attacking = true
+	
+	await get_tree().create_timer(0.075).timeout
+	hurt_box.monitoring = true
+	
 
 
 func player_exit_state() -> void:
 	animation_player.animation_finished.disconnect(end_attacking)
 	attacking = false
+	hurt_box.monitoring = false
 	pass
 
 

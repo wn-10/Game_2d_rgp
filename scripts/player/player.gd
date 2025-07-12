@@ -7,6 +7,8 @@ var animation_player_direction : Vector2 = Vector2.DOWN
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var state_machine: PlayerStateMachine = $StateMachine
 
+signal direction_changed(new_direction : Vector2)
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	state_machine.initialize(self)
@@ -32,6 +34,7 @@ func set_direction() -> bool:
 	if  new_direction == animation_player_direction:
 		return false
 	animation_player_direction = new_direction
+	direction_changed.emit(new_direction)
 	# 翻转,此方法可以让子节点一起翻转
 	player_sprite.scale.x = -1 if animation_player_direction == Vector2.LEFT else 1
 	return true
