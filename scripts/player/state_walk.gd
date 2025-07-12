@@ -3,6 +3,7 @@ extends State
 
 @export var move_speed : float = 100.0
 @onready var idle: State = $"../Idle"
+@onready var attack: State = $"../Attack"
 
 func player_enter_state() -> void:
 	player.update_animation("walk")
@@ -26,4 +27,6 @@ func physics_process_state(_delta : float) -> State:
 	
 	
 func handle_input_state(_event : InputEvent) -> State:
+	if _event.is_action_pressed("attack"):
+		return attack
 	return null
