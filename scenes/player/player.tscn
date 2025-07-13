@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://3vfr8kmi3eow"]
+[gd_scene load_steps=32 format=3 uid="uid://3vfr8kmi3eow"]
 
 [ext_resource type="Script" uid="uid://dvxewpx2q3le2" path="res://scripts/player/player.gd" id="1_dovo2"]
 [ext_resource type="Texture2D" uid="uid://d4icvrqdechvp" path="res://assets/player/sprites/PlayerSprite02.png" id="2_p47bc"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://ce21wx0xcwcic" path="res://assets/player/sprites/Shadow.png" id="9_5gtgg"]
 [ext_resource type="PackedScene" uid="uid://dyn8uqrp36iev" path="res://scenes/general_nodes/hurt_box/hurt_box.tscn" id="10_h17s1"]
 [ext_resource type="Script" uid="uid://ciikj3yifqy8h" path="res://scripts/player/player_interactions_host.gd" id="10_je7p5"]
+[ext_resource type="Script" uid="uid://b4u0c1tpqo8wi" path="res://scripts/player/camera_2d.gd" id="11_fm80t"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wt17y"]
 
@@ -551,6 +552,8 @@ attack_sound = ExtResource("8_qek5x")
 decelerate_speed = 10.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
+editor_draw_limits = true
+script = ExtResource("11_fm80t")
 
 [node name="Audio" type="Node2D" parent="."]
 
