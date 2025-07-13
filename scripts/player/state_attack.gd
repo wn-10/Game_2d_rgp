@@ -9,7 +9,8 @@ var attacking : bool = false
 @onready var animation_player: AnimationPlayer = $"../../AnimationPlayer"
 @onready var animation_player_attack_effect: AnimationPlayer = $"../../PlayerSprite/AttackEffectSprite/AnimationPlayer"
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $"../../Audio/AudioStreamPlayer2D"
-@onready var hurt_box: HurtBox = $"../../Interactions/HurtBox"
+@onready var attack_hurt_box: HurtBox = %AttackHurtBox
+
 
 func player_enter_state() -> void:
 	player.update_animation("attack")
@@ -23,14 +24,14 @@ func player_enter_state() -> void:
 	attacking = true
 	
 	await get_tree().create_timer(0.075).timeout
-	hurt_box.monitoring = true
+	attack_hurt_box.monitoring = true
 	
 
 
 func player_exit_state() -> void:
 	animation_player.animation_finished.disconnect(end_attacking)
 	attacking = false
-	hurt_box.monitoring = false
+	attack_hurt_box.monitoring = false
 	pass
 
 

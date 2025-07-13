@@ -246,6 +246,9 @@ _data = {
 &"no_attack": SubResource("Animation_myrg7")
 }
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_je7p5"]
+radius = 20.0
+
 [sub_resource type="Animation" id="Animation_gmlin"]
 length = 0.001
 tracks/0/type = "value"
@@ -259,6 +262,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("%AttackHurtBox/CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 16)]
 }
 
 [sub_resource type="Animation" id="Animation_je7p5"]
@@ -277,6 +292,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [21, 23]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("%AttackHurtBox/CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -5)]
+}
 
 [sub_resource type="Animation" id="Animation_h17s1"]
 resource_name = "attack_side"
@@ -294,6 +321,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [27, 29]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AttackHurtBox/CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(15, -26)]
+}
 
 [sub_resource type="Animation" id="Animation_5gtgg"]
 resource_name = "attack_up"
@@ -310,6 +349,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [24, 26]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AttackHurtBox/CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -38)]
 }
 
 [sub_resource type="Animation" id="Animation_dovo2"]
@@ -434,9 +485,6 @@ _data = {
 &"walk_up": SubResource("Animation_0owmy")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_je7p5"]
-radius = 20.0
-
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(-1, -1)
 collision_mask = 16
@@ -444,6 +492,7 @@ motion_mode = 1
 script = ExtResource("1_dovo2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
 shape = SubResource("CircleShape2D_wt17y")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
@@ -455,7 +504,7 @@ vframes = 3
 [node name="ShadowSprite" type="Sprite2D" parent="PlayerSprite"]
 modulate = Color(0, 0, 0, 0.784314)
 show_behind_parent = true
-position = Vector2(0, 23)
+position = Vector2(1, 19)
 texture = ExtResource("9_5gtgg")
 
 [node name="AttackEffectSprite" type="Sprite2D" parent="PlayerSprite"]
@@ -469,6 +518,17 @@ libraries = {
 &"": SubResource("AnimationLibrary_myrg7")
 }
 autoplay = "no_attack"
+
+[node name="AttackHurtBox" parent="PlayerSprite" instance=ExtResource("10_h17s1")]
+unique_name_in_owner = true
+position = Vector2(0, 23)
+collision_mask = 256
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerSprite/AttackHurtBox"]
+position = Vector2(0, 16)
+shape = SubResource("CircleShape2D_je7p5")
+debug_color = Color(1, 0, 0, 0.419608)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../PlayerSprite")
@@ -499,12 +559,3 @@ max_polyphony = 4
 
 [node name="Interactions" type="Node2D" parent="."]
 script = ExtResource("10_je7p5")
-
-[node name="HurtBox" parent="Interactions" instance=ExtResource("10_h17s1")]
-collision_mask = 256
-monitoring = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactions/HurtBox"]
-position = Vector2(0, 16)
-shape = SubResource("CircleShape2D_je7p5")
-debug_color = Color(1, 0, 0, 0.419608)

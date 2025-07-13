@@ -1,6 +1,7 @@
 class_name Player
 extends CharacterBody2D
 
+const DIR_4 = [Vector2.RIGHT,Vector2.DOWN,Vector2.LEFT,Vector2.UP]
 var player_direction : Vector2 = Vector2.ZERO
 var animation_player_direction : Vector2 = Vector2.DOWN
 @onready var player_sprite: Sprite2D = $PlayerSprite
@@ -24,14 +25,13 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 func set_direction() -> bool:
-	var new_direction : Vector2 = animation_player_direction
 	if player_direction == Vector2.ZERO:
 		return false
-	if player_direction.y == 0:
-		new_direction = Vector2.LEFT if player_direction.x < 0 else Vector2.RIGHT
-	if player_direction.x == 0:
-		new_direction = Vector2.UP if player_direction.y < 0 else Vector2.DOWN
-	if  new_direction == animation_player_direction:
+	
+	var direction_id : int = int(round(player_direction + animation_player_direction * 0.1).angle() / TAU * DIR_4.size())
+	var new_direction = DIR_4[direction_id]
+	
+	if new_direction == animation_player_direction:
 		return false
 	animation_player_direction = new_direction
 	direction_changed.emit(new_direction)
